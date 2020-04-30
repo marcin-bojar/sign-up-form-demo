@@ -87,9 +87,6 @@ h2 {
 }
 
 .form-group small {
-    position: absolute;
-    left: 1.1rem;
-    bottom: 0;
     color: var(--color-error);
     visibility: hidden;
 }
@@ -123,5 +120,9 @@ h2 {
     transform: translateY(0);
     border: 2px solid #11a7ee;
     background-color: #11a7ee;
+    outline: none;
+}
+
+.form button:focus {
     outline: none;
 }
