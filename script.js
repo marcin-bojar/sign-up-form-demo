@@ -31,12 +31,12 @@ function checkEmail(email) {
     }
 };
 
-//Input validation
+//Input validation when submitting form
 // username at least 3 and not more than 20 characters
 // password at least 6 and not more than 30 characters
 // password confirmation
 
-function checkInputs(inputArr) {
+function checkAllInputs(inputArr) {
     inputArr.forEach(el => {
         if(el.value.trim() === '') {         
             showError(el, `${getInputName(el)} is required!`);
@@ -44,6 +44,9 @@ function checkInputs(inputArr) {
             if(checkLength(el, 3, 20)) {
                 showSuccess(el);
             };
+        } else if(el.id === 'email') {
+            checkEmail(el);
+
         } else if(el.id === 'password' || el.id === 'password2') {
             if(checkLength(el, 6, 30)) {   
                 passwordMatch(password, password2);
@@ -54,6 +57,29 @@ function checkInputs(inputArr) {
     });
 };
 
+//Checking input when focused out
+function checkInput(input) {
+    
+        if(input.value.trim() === '') {         
+            showError(input, `${getInputName(input)} is required!`);
+        } else if (input.id === 'username') {
+            if(checkLength(input, 3, 20)) {
+                showSuccess(input);
+            };
+        } else if(input.id === 'email') {
+            checkEmail(input);
+
+        } else if(input.id === 'password' || input.id === 'password2') {
+            if(checkLength(input, 6, 30)) {   
+                passwordMatch(password, password2);
+            };
+        } else {
+            showSuccess(input);
+        }
+};
+
+
+//Checking input length
 function checkLength(input, min, max) {
     if(input.value.length < min) {
         showError(input, `${getInputName(input)} must be at least ${min} characters.`);
@@ -64,6 +90,7 @@ function checkLength(input, min, max) {
     } else return true;
 };
 
+//Password match check
 function passwordMatch(pass1, pass2) {
     if(pass1.value === pass2.value) {
         showSuccess(pass1);
@@ -83,7 +110,11 @@ function getInputName(input) {
 //Event listeners
 form.addEventListener('submit', e => {
     e.preventDefault();
+    checkAllInputs(inputArr);   
+});
 
-    checkInputs(inputArr);
-    checkEmail(email);
+inputArr.forEach(el => {
+    el.addEventListener('focusout', e => {
+        checkInput(e.target);
+    });
 });
